@@ -1,3 +1,17 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+
+.worldMap {
+    background-image: linear-gradient(to right, #3984d4, white, white, #3984d4);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
 .Europe {
 color: yellow;
 }
