@@ -22,19 +22,21 @@ async function giveCountry() {
             axios.get('https://restcountries.com/v2/all');
             const sorted = result.data.sort((a, b) => a.population - b.population);
         for (let i = 0; i < sorted.length ; i++) {
-            const countryName = document.createElement('li');
+            const countryDiv = document.createElement('div')
+            countryDiv.id = "country-div";
+            const countryName = document.createElement('p');
             countryName.className = giveRegionColor(sorted[i].region);
-            console.log(countryName.className);
             const countryFlag = document.createElement('img');
             const countryPopulation = document.createElement('p');
+            const countryPopulationNumber = sorted[i].population;
             countryName.textContent = sorted[i].name;
             countryFlag.src = sorted[i].flag;
-            countryFlag.width="50";
-            countryPopulation.textContent = "has a population of " + sorted[i].population + " people";
+            countryPopulation.textContent = "Has a population of " + countryPopulationNumber + " people";
             const countryList = document.getElementById("country-name");
-            countryList.appendChild(countryName);
-            countryList.appendChild(countryFlag);
-            countryList.appendChild(countryPopulation);
+            countryDiv.appendChild(countryName);
+            countryDiv.appendChild(countryFlag);
+            countryDiv.appendChild(countryPopulation);
+            countryList.appendChild(countryDiv);
         }
     } catch (e){
         console.error(e);

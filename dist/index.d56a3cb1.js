@@ -460,9 +460,6 @@ function hmrAcceptRun(bundle, id) {
 
 },{}],"5HwUs":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "giveRegionColor", ()=>giveRegionColor
-);
 var _axios = require("axios");
 var _axiosDefault = parcelHelpers.interopDefault(_axios);
 function giveRegionColor(region) {
@@ -476,25 +473,24 @@ function giveRegionColor(region) {
 async function giveCountry() {
     try {
         const result = await _axiosDefault.default.get('https://restcountries.com/v2/all');
-        // console.log(result);
         const sorted = result.data.sort((a, b)=>a.population - b.population
         );
-        // console.log(sorted);
         for(let i = 0; i < sorted.length; i++){
-            const countryName = document.createElement('li');
+            const countryDiv = document.createElement('div');
+            countryDiv.id = "country-div";
+            const countryName = document.createElement('p');
             countryName.className = giveRegionColor(sorted[i].region);
-            console.log(countryName.className);
             const countryFlag = document.createElement('img');
             const countryPopulation = document.createElement('p');
+            const countryPopulationNumber = sorted[i].population;
             countryName.textContent = sorted[i].name;
-            // countryName.style.color = color;
             countryFlag.src = sorted[i].flag;
-            countryFlag.width = "50";
-            countryPopulation.textContent = "has a population of " + sorted[i].population + " people";
+            countryPopulation.textContent = "Has a population of " + countryPopulationNumber + " people";
             const countryList = document.getElementById("country-name");
-            countryList.appendChild(countryName);
-            countryList.appendChild(countryFlag);
-            countryList.appendChild(countryPopulation);
+            countryDiv.appendChild(countryName);
+            countryDiv.appendChild(countryFlag);
+            countryDiv.appendChild(countryPopulation);
+            countryList.appendChild(countryDiv);
         }
     } catch (e) {
         console.error(e);
