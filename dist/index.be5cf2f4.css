@@ -1,13 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap');
-
-
+@import "https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap";
 * {
     margin: 0;
     box-sizing: border-box;
 }
+
+
 body {
     background-image: linear-gradient(to right, #3984d4, white, white, #3984d4);
 }
+
 
 .world-map-div {
     margin-left: 10%;
@@ -17,35 +18,41 @@ body {
 
 }
 
+
 .world-map {
     border-radius: 50%;
     box-shadow: 20px 20px 4px #3984d4;
 }
 
+
 .Europe {
 color: yellow;
 }
+
 
 .Africa {
     color: blue;
 }
 
+
 .Americas {
     color: green;
 }
+
 
 .Asia {
     color: red;
 }
 
+
 .Oceania {
     color: purple;
 }
 
+
 .Other {
     color: orange;
 }
-
 
 
 .world-map-div img {
@@ -55,6 +62,7 @@ color: yellow;
 
 
 }
+
 
 .content-container{
     /*z-index: -1;*/
@@ -67,6 +75,7 @@ color: yellow;
     /*border-color: black;*/
 }
 
+
 #country-div {
     /*z-index: 1;*/
     display: flex;
@@ -76,9 +85,11 @@ color: yellow;
     padding-bottom: 20px;
 }
 
+
 #country-div img{
 width: 50px;
 }
+
 
 #country-div p {
     font-family: 'Roboto', sans-serif, "Comic Sans MS", "Times New Roman";
@@ -86,3 +97,5 @@ width: 50px;
 }
 
 
+
+/*# sourceMappingURL=index.be5cf2f4.css.map */
