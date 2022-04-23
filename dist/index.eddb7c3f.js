@@ -140,12 +140,12 @@
       this[globalName] = mainExports;
     }
   }
-})({"1Mq12":[function(require,module,exports) {
+})({"6BPv4":[function(require,module,exports) {
 var HMR_HOST = null;
 var HMR_PORT = null;
 var HMR_SECURE = false;
 var HMR_ENV_HASH = "4a236f9275d0a351";
-module.bundle.HMR_BUNDLE_ID = "b5b6c481d56a3cb1";
+module.bundle.HMR_BUNDLE_ID = "ab49cac0eddb7c3f";
 "use strict";
 function _createForOfIteratorHelper(o, allowArrayLike) {
     var it;
@@ -458,7 +458,7 @@ function hmrAcceptRun(bundle, id) {
     acceptedAssets[id] = true;
 }
 
-},{}],"5HwUs":[function(require,module,exports) {
+},{}],"1hFYX":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _axios = require("axios");
 var _axiosDefault = parcelHelpers.interopDefault(_axios);
@@ -477,12 +477,45 @@ function showCountriesOnPage(countriesArray) {
     const countryList = document.getElementById("country-list");
     countryList.innerHTML = countriesArray.map((country)=>{
         return `
-        <div class="country-div">
         <img src="${country.flag}" alt="Vlag van ${country.name}" class="flag" />
         <span class="${getRegionClass(country.region)}">${country.name}</span>
-        </div>
+        <p class="population">Has a population of ${country.population} people</p>
     `;
     }).join(" ");
+}
+//-------------------------Part 2-----------------------//
+const button = document.getElementById("button");
+button.addEventListener('click', getInputFromForm);
+function getInputFromForm() {
+    const input = document.getElementById("country-name-input").value;
+    searchCountry(input);
+}
+async function searchCountry(input) {
+    try {
+        const result = await _axiosDefault.default.get('https://restcountries.com/v2/name/' + input + "?fields=flag,name,subregion,capital,currencies,population");
+        const countryInfo = result.data;
+        //printResult(countryInfo);
+        countryCurrency(countryInfo);
+    } catch (e) {
+        console.error(e);
+    }
+}
+function countryCurrency(countryInfo) {
+    const currencyArray = countryInfo[0].currencies;
+    const currencyNames = [];
+    for(let i = 0; i < currencyArray.length; i++)currencyNames.push(currencyArray[i].name);
+    printResult(countryInfo, currencyNames);
+}
+function printResult(countryInfo, currencyNames) {
+    const searchResult = document.getElementById("search-result");
+    searchResult.innerHTML = countryInfo.map((country)=>{
+        return `
+        <img src="${country.flag}" alt="Vlag van ${country.name}" class="flag" />
+        <p class="name">${country.name} is situated in ${country.subregion}</p>
+         <p class="population">It has a population of ${country.population} people</p>
+         <p class="capital-and-currency">The capital is ${country.capital} and you can pay with ${currencyNames.join(" & ")}.</p>
+        `;
+    });
 }
 function getRegionClass(region) {
     if (region == "Europe") return "Europe";
@@ -491,54 +524,6 @@ function getRegionClass(region) {
     else if (region == "Asia") return "Asia";
     else if (region == "Oceania") return "Oceania";
     else return "Other";
-}
-//-------------------------Part 2-----------------------//
-const form = document.getElementById("country-form");
-form.addEventListener("submit", getInputFromForm);
-function getInputFromForm(e) {
-    e.preventDefault();
-    let input = document.getElementById("country-name-input").value;
-    searchCountry(input);
-}
-async function searchCountry(input) {
-    try {
-        const result = await _axiosDefault.default.get('https://restcountries.com/v2/name/' + input + "?fields=flag,name,subregion,capital,currencies,population,languages");
-        const countryInfo = result.data;
-        countryCurrency(countryInfo);
-    } catch (e) {
-        const searchResult = document.getElementById("search-result");
-        searchResult.innerHTML = `<p>Land bestaat niet</p>`;
-        console.error(e);
-    }
-}
-function countryCurrency(countryInfo) {
-    const currencyArray = countryInfo[0].currencies;
-    const currencyNames = [];
-    for(let i = 0; i < currencyArray.length; i++)currencyNames.push(currencyArray[i].name);
-    countryLanguage(countryInfo, currencyNames);
-}
-function countryLanguage(countryInfo, currencyNames) {
-    console.log;
-    const languageArray = countryInfo[0].languages;
-    const languageName = [];
-    for(let i = 0; i < languageArray.length; i++)languageName.push(languageArray[i].name);
-    printResult(countryInfo, currencyNames, languageName);
-}
-function printResult(countryInfo, currencyNames, languageName) {
-    const searchResult = document.getElementById("search-result");
-    searchResult.innerHTML = countryInfo.map((country)=>{
-        return `
-        <img src="${country.flag}" alt="Vlag van ${country.name}" class="flag" />
-        <p class="name">${country.name} is situated in ${country.subregion}</p>
-         <p class="population">It has a population of ${country.population} people</p>
-         <p class="capital-and-currency">The capital is ${country.capital} and you can pay with ${currencyNames.join(" and ")}</p>
-         <p class="language">They speak ${languageName.join(" and ")}.</p>
-        `;
-    });
-    resetForm();
-}
-function resetForm() {
-    form.reset();
 }
 
 },{"axios":"1IeuP","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}],"1IeuP":[function(require,module,exports) {
@@ -2135,6 +2120,6 @@ exports.export = function(dest, destName, get) {
     });
 };
 
-},{}]},["1Mq12","5HwUs"], "5HwUs", "parcelRequirecb08")
+},{}]},["6BPv4","1hFYX"], "1hFYX", "parcelRequirecb08")
 
-//# sourceMappingURL=index.d56a3cb1.js.map
+//# sourceMappingURL=index.eddb7c3f.js.map

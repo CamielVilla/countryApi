@@ -1,6 +1,32 @@
 import axios from "axios";
+//-------------------------Part 1-----------------------//
+async function fetchCountries() {
+    try{
+        const result = await
+            axios.get('https://restcountries.com/v2/all/');
+        const countriesArray = result.data;
+        showCountriesOnPage(countriesArray);
+    } catch (e){
+        console.error(e);
+    }
+}
 
-function giveRegionColor(region) {
+fetchCountries();
+
+
+function showCountriesOnPage(countriesArray) {
+const countryList = document.getElementById("country-list");
+countryList.innerHTML = countriesArray.map((country) => {
+    return `
+        <div class="country-div">
+        <img src="${country.flag}" alt="Vlag van ${country.name}" class="flag" />
+        <span class="${getRegionClass(country.region)}">${country.name}</span>
+        </div>
+    `
+}).join(" ")
+}
+
+function getRegionClass(region) {
     if (region == "Europe"){
         return "Europe";
     }else if(region == "Africa") {
@@ -11,94 +37,71 @@ function giveRegionColor(region) {
         return "Asia";
     } else if(region == "Oceania"){
         return "Oceania";
-        }else {
+    }else {
         return "Other";
     }
-
 }
-// async function giveCountry() {
-//     try{
-//         const result = await
-//             axios.get('https://restcountries.com/v2/all');
-//             const sorted = result.data.sort((a, b) => a.population - b.population);
-//         for (let i = 0; i < sorted.length ; i++) {
-//             const countryDiv = document.createElement('div')
-//             countryDiv.id = "country-div";
-//             const countryName = document.createElement('p');
-//             countryName.className = giveRegionColor(sorted[i].region);
-//             const countryFlag = document.createElement('img');
-//             const countryPopulation = document.createElement('p');
-//             const countryPopulationNumber = sorted[i].population;
-//             countryName.textContent = sorted[i].name;
-//             countryFlag.src = sorted[i].flag;
-//             countryPopulation.textContent = "Has a population of " + countryPopulationNumber + " people";
-//             const countryList = document.getElementById("country-name");
-//             countryDiv.appendChild(countryName);
-//             countryDiv.appendChild(countryFlag);
-//             countryDiv.appendChild(countryPopulation);
-//             countryList.appendChild(countryDiv);
-//         }
-//     } catch (e){
-//         console.error(e);
-//     }
-// }
 
-giveCountry();
+//-------------------------Part 2-----------------------//
 
+const form = document.getElementById("country-form");
+form.addEventListener("submit", getInputFromForm);
 
-async function giveCountry(country) {
+function getInputFromForm(e) {
+    e.preventDefault();
+    let input = document.getElementById("country-name-input").value;
+    searchCountry(input);
+}
+
+async function searchCountry (input) {
     try{
         const result = await
-            axios.get('https://restcountries.com/v2/all');
-        const sorted = result.data.sort((a, b) => a.population - b.population);
-
-        for (let i = 0; i < sorted.length ; i++) {
-            if (country === sorted[i].name) {
-                const countryDiv = document.createElement('div')
-                countryDiv.id = "country-div";
-                const countryName = document.createElement('p');
-                countryName.className = giveRegionColor(sorted[i].region);
-                const countryFlag = document.createElement('img');
-                const countryPopulation = document.createElement('p');
-                const countryPopulationNumber = sorted[i].population;
-                countryName.textContent = sorted[i].name;
-                countryFlag.src = sorted[i].flag;
-                countryPopulation.textContent = "Has a population of " + countryPopulationNumber + " people";
-                const countryList = document.getElementById("country-name");
-                countryDiv.appendChild(countryName);
-                countryDiv.appendChild(countryFlag);
-                countryDiv.appendChild(countryPopulation);
-                countryList.appendChild(countryDiv);
-            }
-        }
+            axios.get('https://restcountries.com/v2/name/' + input + "?fields=flag,name,subregion,capital,currencies,population,languages");
+        const countryInfo = result.data;
+        countryCurrency(countryInfo);
     } catch (e){
+        const searchResult = document.getElementById("search-result");
+        searchResult.innerHTML = `<p>Land bestaat niet</p>`;
         console.error(e);
     }
 }
-// async function searchCountry() {
-//     try {
-//         const result = await
-//         axios.get('https://restcountries.com/v2/all');
-//         const  { data: { name }} = result;
-//         console.log(name);
-//
-//
-//     }catch (e) {
-// console.error(e)
-//     }
-//
-// }
 
+function countryCurrency (countryInfo) {
+    const currencyArray = countryInfo[0].currencies;
+    const currencyNames = [];
+    for (let i = 0; i < currencyArray.length; i++) {
+        currencyNames.push(currencyArray[i].name)
+    }
+    countryLanguage(countryInfo, currencyNames)
 
-const button = document.getElementById("button");
-button.addEventListener("click", showCountry)
+};
 
-const countryInput = document.getElementById("countryname");
-// countryInput.addEventListener("keypress", showInput);
-//
-// function showInput(e) {
-//     console.log(e)
-// }
-function showCountry() {
-    console.log();
+function countryLanguage (countryInfo, currencyNames) {
+    console.log
+    const languageArray = countryInfo[0].languages;
+    const languageName = [];
+    for (let i = 0; i < languageArray.length ; i++) {
+        languageName.push(languageArray[i].name)
+    }
+    printResult(countryInfo, currencyNames, languageName)
 }
+
+function printResult(countryInfo, currencyNames, languageName) {
+    const searchResult = document.getElementById("search-result");
+    searchResult.innerHTML = countryInfo.map((country) => {
+        return `
+        <img src="${country.flag}" alt="Vlag van ${country.name}" class="flag" />
+        <p class="name">${country.name} is situated in ${country.subregion}</p>
+         <p class="population">It has a population of ${country.population} people</p>
+         <p class="capital-and-currency">The capital is ${country.capital} and you can pay with ${currencyNames.join(" and ")}</p>
+         <p class="language">They speak ${languageName.join(" and ")}.</p>
+        `
+    })
+    resetForm()
+}
+
+function resetForm() {
+   form.reset();
+}
+
+
