@@ -11,12 +11,22 @@
 <body>
 <div class="world-map-div">
 
+
 <img  class="world-map" src="assets/world_map.png" >
 
 </div>
-<div class="content-container">
-    <div id="country-name" class="countrylist"></div>
+<div class="search-container">
+<form id="country-form">
+<input type="text" id="country-name-input"  name="countryname" placeholder="Country name">
+<button type="submit" id="button">search</button>
+</form>
+<div id="search-result"></div>
 </div>
+
+<div class="country-container">
+<div id="country-list" class="country-list-class"></div>
+</div>
+
 <script type="module" src="app.js"></script>
 </body>
 </html>
